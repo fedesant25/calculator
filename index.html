@@ -51,7 +51,7 @@ function subtract(a, b) { return a - b; }
 function multiply(a, b) { return a * b; }
 function divide(a, b) { return a / b; }
 
-function operator (a,operator, b ) {
+function operate (a,operator, b ) {
     firstNumber = Number(firstNumber)
     secondNumber = Number(secondNumber)
 
@@ -60,6 +60,55 @@ function operator (a,operator, b ) {
      if (operator === "*") return multiply(a, b);
      if (operator === "/") return divide(a, b);
 }
+
+const display = document.querySelector("#display");
+const digits = document.querySelectorAll(".digit");
+const operators = document.querySelectorAll(".operator");
+const equal = document.querySelector("#equals")
+const clear = document.querySelector("#clear")
+
+// Digits: fill the first number, or the second once an operator is chosen
+digits.forEach((digit) => {
+  digit.addEventListener("click", () => {
+    if (operator === "") {
+      firstNumber += digit.textContent;
+      display.textContent = firstNumber;
+    } else {
+      secondNumber += digit.textContent;
+      display.textContent += secondNumber;
+    }
+  });
+});
+
+// Operators: remember which one was clicked
+operators.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    operator = btn.dataset.operator;
+    display.textContent += operator;
+  });
+});
+
+
+equal.addEventListener("click", () => {
+  // If any piece is missing, do nothing
+  if (firstNumber === "" || operator === "" || secondNumber === "") return;
+
+  const result = operate(Number(firstNumber), operator, Number(secondNumber));
+  display.textContent = result;
+
+  // Get ready for the next calculation
+  firstNumber = String(result);
+  secondNumber = "";
+  operator = "";
+});
+
+clear.addEventListener("click", () => {
+    firstNumber = "";
+    secondNumber = "";
+    operator = "";
+    display.textContent = "0";
+});
+
 
 </script>
 </body>
